@@ -1,0 +1,39 @@
+services:
+  ollama:
+    image: ollama/ollama:${OLLAMA_DOCKER_TAG-0.14.2}
+    container_name: ollama
+    pull_policy: always
+    tty: true
+    restart: unless-stopped
+    volumes:
+      - /home/idt/ollama:/root/.ollama
+
+  qdrant:
+    image: qdrant/qdrant:1.16.3
+    container_name: qdrant
+    restart: unless-stopped
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - ./volumes/qdrant:/qdrant/storage
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-v0.7.1}
+    container_name: open-webui
+    restart: unless-stopped
+    depends_on:
+      - ollama
+      - qdrant
+    ports:
+      - "8080:8080"
+    volumes:
+      - open-webui:/app/backend/data
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - VECTOR_DB=qdrant
+      - QDRANT_URI=http://qdrant:6333
+      - ENABLE_PERSISTENT_CONFIG=False
+
+volumes:
+  open-webui: {}
