@@ -1,10 +1,11 @@
 import json
+import os
 import time
 from typing import List, Dict, Any, Optional
 import requests
 
-OPENWEBUI_BASE_URL = "http://10.26.5.81:8080/api"
-TOKEN = "sk-372c8765ca1d49a38a16ced2f35b2ea5"
+OPENWEBUI_BASE_URL = os.environ.get("OPENWEBUI_BASE_URL", "http://localhost:8080") + "/api"
+TOKEN = os.environ["OPENWEBUI_TOKEN"]
 MODEL_NAME = "gpt-oss:120b"
 
 INPUT_JSONL = "queries_80.jsonl"
