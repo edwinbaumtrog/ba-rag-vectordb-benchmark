@@ -1,11 +1,12 @@
 import json
+import os
 import time
 import re
 from pathlib import Path
 import requests
 
-BASE_URL = "http://10.26.5.81:8080"
-TOKEN = "sk-372c8765ca1d49a38a16ced2f35b2ea5"
+BASE_URL = os.environ.get("OPENWEBUI_BASE_URL", "http://localhost:8080")
+TOKEN = os.environ["OPENWEBUI_TOKEN"]
 JUDGE_MODEL = "gpt-oss:120b"
 
 FOLDERS = ["no_rag"]
